@@ -1,0 +1,53 @@
+<include file="Public/header"/>
+
+<div class="row">
+    <div class="col-md-12">
+        <form class="layui-form" id="addRetire">
+            <input type="hidden" name="id" value="<{$info.id}>">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <label for="addvalue">增加回款金额：</label>
+                    <input id="addvalue" name="addvalue" value="0" placeholder="请输入金额">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <button class="layui-btn" lay-submit="" lay-filter="save">提交</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<include file="Public/footer"/>
+
+<script>
+    layui.use(['form'], function () {
+        const form = layui.form;
+        form.on('submit(save)', function (data) {
+            $.ajax({
+                type: 'post',
+                url: "<{:U('addRetire')}>",
+                data: $('#addRetire').serialize(),
+                success: function (res) {
+                    if(res.status){
+                        layer.alert("增加成功", {icon: 6}, function () {
+                            parent.location.reload();
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                    }else{
+                        layer.msg(res.msg ? res.msg : "操作失败!", {icon: 5}, function () {
+                            parent.location.reload();
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                        return false;
+                    }
+                },
+            });
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>

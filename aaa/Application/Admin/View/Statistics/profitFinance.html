@@ -1,0 +1,144 @@
+<include file="Public/header"/>
+
+<form class="layui-form" action="" method="get" autocomplete="off">
+    <input type="hidden" name="m" value="<{$model}>">
+    <input type="hidden" name="c" value="Statistics">
+    <input type="hidden" name="a" value="profitFinance">
+    <input type="hidden" name="p" value="1">
+    <div class="layui-form-item">
+        <label class="layui-form-label">日期：</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" name="date" id="date" placeholder="日期"  value="<{$date}>">
+        </div>
+        <div class="layui-inline">
+            <button type="submit" class="layui-btn"><span
+                    class="glyphicon glyphicon-search"></span> 搜索
+            </button>
+        </div>
+
+    </div>
+</form>
+<blockquote class="layui-elem-quote" style="font-size:14px;padding;8px;">渠道利润总计：
+    今日总订单流水：<{$stat['today_pay_total_amount']}>元
+    今日总付款流水：<{$stat['today_pay_amount']}>元
+    今日总利润：<{$stat['today_pay_profit']}>元
+    昨日总订单流水：<{$stat['pay_total_amount']}>元
+    昨日总付款流水：<{$stat['pay_amount']}>元
+    昨日总利润：<{$stat['pay_profit']}>元</blockquote>
+
+<div class="row">
+    <foreach name="list" item="v">
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5 style="width: 100%;"><{$v.username}></h5>
+                </div>
+                <div class="ibox-content">
+                    <p>今日总订单流水：<{$v.today_pay_total_amount}>元</p>
+                    <p>今日总付款流水：<{$v.today_pay_amount}>元</p>
+                    <p>今日总利润：<{$v.today_pay_profit}>元</p>
+                    <p>昨日总订单流水：<{$v.pay_total_amount}>元</p>
+                    <p>昨日总付款流水  &nbsp;&nbsp;&nbsp;：<{$v.pay_amount}>元</p>
+                    <p>昨日总利润：<{$v.pay_profit}>元</p>
+                </div>
+                <div class="ibox-content">
+
+                    <p>
+                        <span style="font-size: 16px;color:#0087ffbf;">今日交易笔数：<strong><{$v.today_count}></strong></span>
+                        <span style="color:#008000b0;font-size: 16px;">今日成功率：<strong><{$v.today_success_rate}>%</strong></span>
+                    </p>
+                    <p>
+                        <span style="font-size: 16px;color:#008000b0;">今日成功笔数：<strong><{$v.today_success_count}></strong></span>
+                        <span style="font-size: 16px;color: #ff0000b3;">今日失败笔数：<strong><{$v.today_fail_count}></strong></span>
+                    </p>
+                    <p>
+                    <p>
+                        <span style="font-size: 16px;color:#008000b0;">今日ios交易笔数：<strong><{$v.today_device_ios}></strong></span>
+                        <span style="font-size: 16px;color: #ff0000b3;">今日ios成功笔数：<strong><{$v.today_success_device_ios}></strong></span>
+                    </p>
+                    <p>
+                    <p>
+                        <span style="font-size: 16px;color:#008000b0;">今日android交易笔数：<strong><{$v.today_device_android}></strong></span>
+                        <span style="font-size: 16px;color: #ff0000b3;">今日android成功笔数：<strong><{$v.today_success_device_android}></strong></span>
+                    </p>
+                    <p>
+                    <p>
+                        <span style="font-size: 16px;color:#008000b0;">今日other交易笔数：<strong><{$v.today_device_other}></strong></span>
+                        <span style="font-size: 16px;color: #ff0000b3;">今日other成功笔数：<strong><{$v.today_success_device_other}></strong></span>
+                    </p>
+                    <p>
+                        <span style="font-size: 16px;color:#0087ffbf;">昨日交易笔数：<strong><{$v.count}></strong></span>
+                        <span style="color:#008000b0;font-size: 16px;">昨日成功率：<strong><{$v.success_rate}>%</strong></span>
+                    </p>
+                    <p>
+                    <p>
+                        <span style="font-size: 16px;color:#008000b0;">昨日成功笔数：<strong><{$v.success_count}></strong></span>
+                        <span style="font-size: 16px;color: #ff0000b3;">昨日失败笔数：<strong><{$v.fail_count}></strong></span>
+                    </p>
+                    <p>
+                    <p>
+                        <span style="font-size: 16px;color:#008000b0;">昨日ios交易笔数：<strong><{$v.device_ios}></strong></span>
+                        <span style="font-size: 16px;color: #ff0000b3;">昨日ios成功笔数：<strong><{$v.success_device_ios}></strong></span>
+                    </p>
+                    <p>
+                    <p>
+                        <span style="font-size: 16px;color:#008000b0;">昨日android交易笔数：<strong><{$v.device_android}></strong></span>
+                        <span style="font-size: 16px;color: #ff0000b3;">昨日android成功笔数：<strong><{$v.success_device_android}></strong></span>
+                    </p>
+                    <p>
+                    <p>
+                        <span style="font-size: 16px;color:#008000b0;">昨日other交易笔数：<strong><{$v.device_other}></strong></span>
+                        <span style="font-size: 16px;color: #ff0000b3;">昨日other成功笔数：<strong><{$v.success_device_other}></strong></span>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </foreach>
+    <div class="page"><{$page}>
+        <div class="layui-input-inline">
+            <form class="layui-form" action="" method="get" id="pageForm" autocomplete="off">
+
+                <select name="rows" style="height: 32px;" id="pageList" lay-ignore >
+                    <option value="">显示条数</option>
+                     <option <if condition="$_GET[rows] neq '' && $_GET[rows] eq 100">selected</if> value="100">100条</option>
+
+      <!-- <option <if condition="$_GET[rows] neq '' && $_GET[rows] eq 15">selected</if> value="15">15条</option>
+      <option <if condition="$_GET[rows] eq 30">selected</if> value="30">30条</option>
+      <option <if condition="$_GET[rows] eq 50">selected</if> value="50">50条</option>
+      <option <if condition="$_GET[rows] eq 80">selected</if> value="80">80条</option>
+      <option <if condition="$_GET[rows] eq 100">selected</if> value="100">100条</option>
+      <option <if condition="$_GET[rows] eq 1000">selected</if> value="1000">1000条</option> -->
+                </select>
+
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<include file="Public/footer"/>
+<script>
+
+    layui.use(['form','table',  'laydate', 'layer'], function () {
+        var form = layui.form
+            ,table = layui.table
+
+            , layer = layui.layer
+            , laydate = layui.laydate;
+
+        //日期时间范围
+        laydate.render({
+            elem: '#date'
+            , type: 'date'
+            ,theme: 'molv'
+            , max: "{:date('Y-m-d')}"
+        });
+    });
+    $('#pageList').change(function(){
+        $('#pageForm').submit();
+    });
+
+</script>
+</body>
+</html>

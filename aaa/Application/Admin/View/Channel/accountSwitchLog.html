@@ -1,0 +1,81 @@
+<include file="Public/header"/>
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <!--条件查询-->
+            <div class="ibox-title">
+                <h5>收款账号开关日志</h5>
+                <div class="ibox-tools">
+                    <i class="layui-icon" onclick="location.replace(location.href);" title="刷新"
+                       style="cursor:pointer;">ဂ</i>
+                </div>
+            </div>
+            <!--条件查询-->
+            <div class="ibox-content">
+                <form class="layui-form" action="" method="get" autocomplete="off" id="orderform">
+                    <input type="hidden" name="m" value="<{$model}>">
+                    <input type="hidden" name="c" value="Order">
+                    <input type="hidden" name="a" value="changeRecord">
+                    <input type="hidden" name="p" value="1">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" name="createtime" id="createtime"
+                                       placeholder="起始时间" value="<{$createtime}>">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn"><span
+                                    class="glyphicon glyphicon-search"></span> 搜索
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <!--交易列表-->
+                <table class="layui-table" lay-data="{width:'100%',id:'frozonData'}">
+                    <thead>
+                    <tr>
+                        <th lay-data="{field:'id',width:50}">ID</th>
+                        <th lay-data="{field:'account_id', width:100}">账号id</th>
+                        <th lay-data="{field:'optype', width:200}">操作</th>
+                        <th lay-data="{field:'ctime', width:160}">时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="list" id="vo">
+                        <tr>
+                            <td><{$vo.id}></td>
+                            <td style="text-align:center;"><{$vo.account_id}></td>
+                            <td style="text-align:center;"><{$vo.switchtype|account_switch_type_desc}>:<{$vo.optype|account_switch_log_desc}></td>
+                            <td style="text-align:center;"><{$vo.ctime}></td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+                <!--交易列表-->
+                <div class="pagex"> <{$page}></div>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="Public/footer"/>
+<script>
+    layui.use(['laydate', 'laypage', 'layer', 'table',['form']], function() {
+        var laydate = layui.laydate //日期
+            , laypage = layui.laypage //分页
+            ,layer = layui.layer //弹层
+            ,form = layui.form //表单
+            , table = layui.table; //表格
+        //日期时间范围
+        laydate.render({
+            elem: '#createtime'
+            , type: 'datetime'
+            ,theme: 'molv'
+            , range: '|'
+        });
+    });
+
+</script>
+</body>
+</html>

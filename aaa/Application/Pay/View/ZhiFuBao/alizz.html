@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+	<script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://gw.alipayobjects.com/as/g/h5-lib/alipayjsapi/3.1.1/alipayjsapi.inc.min.js"></script>
+
+    <link href="/hipay.css" rel="stylesheet" type="text/css">
+    <link href="/style.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: #c14443;
+        overflow: hidden;
+    }
+    </style>
+	
+</head>
+
+<body>
+
+<div class="aui-free-head">
+	<div class="aui-flex b-line">
+		<div class="aui-user-img">
+			<img src="/tx.jpeg">
+		</div>
+		
+		<div class="aui-flex-box">
+			<h5>自动充值机器人</h5>
+			<p>付款成功后将自动充值到账</p>
+		</div>		
+	</div>
+	<div class="aui-flex aui-flex-text">
+		<div class="aui-flex-box">
+			<h2>充值金额</h2>
+            <h3>￥<{$amount}></h3>
+			<p>充单号：<{$orderid}></p>
+			<div style="border-radius: 10px; background-color:#CBCBCB; font-size: 1.2rem; padding: 8px; margin:10px;">请耐心等待，好运自然来</div>
+			
+				<div style="color: #6BC1D2; font-size: 1.4rem; ">排队中，预计等待:<i id="pay_delay"><{$pay_delay}></i>秒</div>
+			
+		</div>
+	</div>
+</div>
+
+<div class="am-process">
+    <div class="am-process-item pay"> <i class="am-icon process pay" aria-hidden="true"></i>
+        <div class="am-process-content">
+            <div class="am-process-main">①等待排队结束</div>
+            <!-- <div class="am-process-brief">禁止选择DIY红包，DIY红包充值不到账</div> -->
+        </div>
+        <div class="am-process-down-border"></div>
+    </div>
+    <div class="am-process-item pay"> <i class="am-icon process success" aria-hidden="true"></i>
+        <div class="am-process-content">
+            <div class="am-process-main">②点击确认转账</div>
+            <!--<div class="am-process-brief">按红包金额付款，禁止修改红包金额 与 祝福语</div> -->
+        </div>
+        <div class="am-process-up-border"></div>
+        <div class="am-process-down-border"></div>
+    </div>
+    <div class="am-process-item success"> <i class="am-icon process success" aria-hidden="true"></i>
+        <div class="am-process-content">
+            <div class="am-process-main">③支付成功</div>
+        </div>
+        <div class="am-process-up-border"></div>
+    </div>
+    <footer class="am-footer am-fixed am-fixed-bottom">
+        <div class="am-footer-interlink am-footer-top">
+            <a class="am-footer-link" href="javascript:history.go(0);">刷新页面</a>
+        </div>
+        <div class="am-footer-copyright">Copyright © 2008-2016 AliPay</div>
+    </footer>
+</div>
+
+<script>
+
+function ready(callback) {
+if (window.AlipayJSBridge)
+	callback && callback();
+else
+	document.addEventListener('AlipayJSBridgeReady', callback, false);
+}
+
+function openAlipay() {
+	//var url = "alipays://platformapi/startapp?appId=09999988&actionType=toAccount&goBack=NO&userId=<{$userid}>&amount=<{$amount}>&memo=<{$orderid}>";
+    var url = "alipays://platformapi/startapp?appId=09999988&actionType=toAccount&goBack=NO&userId=<{$userid}>&amount=<{$amount}>";
+	/*var u = navigator.userAgent, app = navigator.appVersion;
+	var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+	var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端 */
+	setTimeout(function () {
+		//ap .pushWindow({ url : url });
+        /*AlipayJSBridge.call('pushWindow', {
+            url: url,
+        }); */
+        window.location.href =  url;
+	},50);
+}
+    
+	
+function pay(){
+	openAlipay();	// 跳转到转账界面
+	/*ap.onAppResume(function(event) {
+        AlipayJSBridge.call("exitApp");
+    });
+	let tradeNO;	// 订单号
+	let t = 0; */
+	
+	var r = window.setInterval(function () {
+		$.ajax({
+			type: 'POST',
+			url: '<{:U("Pay/checkstatus")}>',
+			data: "orderid=<{$orderid}>",
+			dataType: 'json',
+			success: function (str) {
+				if (str.status == "ok") {
+					//$("#ewm").attr("src", "Uploads/successpay.png");
+					window.clearInterval(r);
+					//window.location.href=str.callback;
+                    AlipayJSBridge.call('alert', {
+						title: '信息提示',
+                        message: '支付已完成',
+						//buttonText: '确定'
+					}, function(){
+                        AlipayJSBridge.call('popWindow');	// 关闭窗口
+					});
+				}
+			}
+		});
+	}, 1000);
+		
+	/*function jmp(){
+		ap.tradePay({orderStr: tradeNO}, result => {
+			if(9000 == result.resultCode || '9000' == result.resultCode){
+				//alert('支付已完成');
+				ap.alert({
+					content: '支付已完成',
+					//buttonText: '确定'
+				}, function(){
+					ap.call('popWindow');	// 关闭窗口
+				});
+			}
+		});
+	}*/
+}
+
+
+ready(function(){
+	$(document).ready(function(){
+	
+		AlipayJSBridge.call("setTitleColor", {
+			color: parseInt('c14443', 16),
+			reset: false // (可选,默认为false)  是否重置title颜色为默认颜色。
+		});
+		//导航栏loadin
+		AlipayJSBridge.call('showTitleLoading');
+		//副标题文字
+		AlipayJSBridge.call('setTitle', {
+			title: '自助充值',
+			subtitle: '安全支付'
+		});
+
+		// 加好友
+		var Instances_Config_UserId ="<{$userid}>";            // 收款支付宝的数字id
+		var Instances_Config_chatLoginId = "<{$account}>";      // 收款支付宝的账号
+		//var OAuth = "<{$url}>";
+
+		/*AlipayJSBridge.call("pushWindow", {
+			url: "alipays://platformapi/startapp?appId=20000186&actionType=addfriend&userId=" + Instances_Config_UserId + "&loginId=" + Instances_Config_chatLoginId + "&source=by_f_v&alert=true",
+			param: {}
+		});*/
+		
+		// 延时发起支付
+		let pay_delay = <{$pay_delay}>;
+		let handle = setInterval(function(){
+			if(--pay_delay <= 0){
+				clearInterval(handle);
+				// 发起支付
+				//pay();
+                openAlipay();
+			}
+			document.getElementById('pay_delay').innerHTML = pay_delay;
+		}, 1000);
+
+    });
+});
+
+</script>
+</body>
+
+</html>
+
+	

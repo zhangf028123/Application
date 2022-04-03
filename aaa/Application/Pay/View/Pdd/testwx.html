@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    if (0 === 0) {
+        window.onload = function() {
+            {
+                var is_postmsg = "";
+                if (is_postmsg == "1") {
+                    parent.postMessage(JSON.stringify({
+                        action: "send_deeplink",
+                        data: {
+                            // deeplink: "weixin://wap/pay?prepayid%3Dwx20171204195948d0d40803800224970868&package=121328958&noncestr=1512388788&sign=545a16c77fd27d98a3eaf23751ec6104"
+                            deeplink: "weixin://wap/pay?prepayid=wx2818004062304312a47b60671231035232&package=280561425&noncestr=1561716040&sign=b6c9f9bb1a006fd7b6703b858442b742"
+                        }
+                    }), "");
+                } else {
+                    var url = "weixin://wap/pay?prepayid%3Dwx20171204195948d0d40803800224970868&package=121328958&noncestr=1512388788&sign=545a16c77fd27d98a3eaf23751ec6104";
+                    //var redirect_url = "https://npay.vip.com/wap/cashier/doPay?paySn=17120467932547060971&sid=D4D4043F87D714D61FDC13B1763BCA1FFF30491E&t=1512388788060&type=queryOrder&orderSns=17120467932547";
+                    var redirect_url = false;
+                    //top.location.href = url;
+                    top.location.href = "weixin://wap/pay?prepayid=wx2818004062304312a47b60671231035232&package=280561425&noncestr=1561716040&sign=b6c9f9bb1a006fd7b6703b858442b742";
+
+                    if (redirect_url) {
+                        setTimeout(
+                            function() {
+                                top.location.href = redirect_url;
+                            },
+                            5000
+                        );
+                    } else {
+                        setTimeout(
+                            function() {
+                                window.history.back();
+                            },
+                            5000);
+                    }
+                }
+            }
+            // );
+        }
+    }
+</script>
+</body>
+</html>

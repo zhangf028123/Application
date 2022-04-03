@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html style="background:rgb(192,70,65);color:#fff;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta http-equiv="Content-Language" content="zh-cn">
+	<meta name="renderer" content="webkit">
+	
+	<script type="text/javascript">
+		document.getElementsByTagName('html')[0].style.fontSize = document.documentElement.clientWidth/7.5 + 'px';
+		window.onresize = function(){
+		  document.getElementsByTagName('html')[0].style.fontSize = document.documentElement.clientWidth/7.5 + 'px';
+		};
+	</script>
+	<!-- 文档 http://myjsapi.alipay.com/alipayjsapi/ -->
+	<script src="https://gw.alipayobjects.com/as/g/h5-lib/alipayjsapi/3.1.1/alipayjsapi.inc.min.js"></script>
+	<!-- <script src="../../../Public/js/home/qcloud_util.js" type="text/javascript"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script> <!-- 剪切板 -->
+	
+	<style type="text/css">
+		*{margin: 0;padding: 0;box-sizing: border-box;}
+		ul{padding:0.5rem .2rem;margin:0;}
+		ul li{padding:0 .25rem .2rem .25rem;font-size: .33rem;}
+		ul li span{color:#fff;display: inline-block;width: 100%;height: .5rem;line-height: .5rem;}
+		ul li i{font-style: normal;color:#fff;display: inline-block;width: 100%;height: .5rem;line-height: .5rem;}
+	</style>
+</head>
+
+<body style="min-height: 130vh;">
+    <div style="width: 100%;height:2.5rem;padding: .2rem;">
+        <div style="display: flex;align-items:center;border-bottom:.5px solid #cdcdcd;">
+            <div style="width: 1rem;height: 1rem;border-radius:50%;overflow: hidden;border:.5px solid #f0f0f0;">
+                <img src="http://47.91.217.76/tx.jpeg" style="width:1.2rem;height: 1.2rem;margin-top: -.1rem;margin-left: -.1rem;">
+            </div>
+            <div style="flex:1;padding-left: .5rem;">
+                <div style="height: .7rem;color:#000;font-size: .31rem;">AI充值机器人:<{$account}></div>
+                <div style="height: .7rem;color:#fff;font-size: .38rem;">发送充单号</div>
+                <div style="height: .7rem;color:#fff;font-size: .38rem;">支付收款后将自动充值到账</div>
+            </div>
+        </div>
+    </div>
+    <div style="height:.8rem;text-align: center;line-height: .8rem;font-size: .28rem;color:#cdcdcd;">
+        充值金额
+    </div>
+    <!-- <img src="http://47.91.217.76/tx.jpeg" style="width:100%;height: auto;" /> -->
+    <div style="height: 40px;line-height: 40px;text-align: center;font-size: 30px;" id="amount">0.00</div>
+    <div style="">
+        <p style="height: 30px;font-size: 12px;text-align: center;color:#eee;">充单号:<input type="text" id="div" readonly style="color:#fff;border:none;background:none;padding:15px;width: auto;" /></p>
+    </div>
+    <ul class="ul">
+        <p style="color:#000;font-size: 16px;">请注意：</p>
+        <li>
+            <span>①朋友列表找到添加的AI机器人，发送充单号&nbsp;消息&nbsp;给机器人</span>
+            <i>粘贴并发送充单号&nbsp;消息&nbsp;给机器人&nbsp;&nbsp;禁止修改充单号</i>
+        </li>
+        <li>
+            <span>②点开收款</span>
+        </li>
+        <li>
+            <span>③支付成功</span>
+            <i>&nbsp;&nbsp;自动充值到账</i>
+        </li>
+    </ul>
+
+	<div style="text-align: center;">
+		<button id="btn" data-clipboard-action="copy" data-clipboard-target="#div" style="border:none;width: 300px;margin: 0 auto;height: 50px;line-height: 50px;color:#000;background: #e5cf9f;text-align: center;font-size: 15px;border-radius: 4px;">复制并支付</button>
+	</div>
+
+<script>   
+var u = navigator.userAgent, app = navigator.appVersion; 
+var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1;
+var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+
+var parsePrice = function(str){
+    if(!str){
+        return 0.00;
+    }
+    str = parseFloat(str);
+    if(isNaN(str)){
+        return 0.00;
+    }
+    return str.toFixed(2);
+};
+function ready(a){
+    window.AlipayJSBridge ? a && a() : document.addEventListener("AlipayJSBridgeReady", a, false)
+}
+
+window.onload = function(){
+
+    ap.onAppResume(function(event){
+        //alert('exit')
+        //AlipayJSBridge.call("exitApp");
+        //r();
+    });
+    
+    var userid = "<{$userid}>";
+    var orderId = "<{$orderid}>";
+    //orderId = orderId.substr(4,orderId.length-4);
+    var account_name = "<{$account}>";
+
+    var amount = parsePrice("<{$amount}>");
+    document.getElementById('div').value = orderId;
+    document.getElementById('amount').innerHTML = amount;
+    ready(r);
+    function r() {
+        AlipayJSBridge.call("setBarBottomLineColor", {
+          color: parseInt('c04641', 16)
+        });
+        
+        AlipayJSBridge.call("setTitleColor", {
+          color: parseInt('ffffff', 16),
+          reset: false //(可选,默认为false)  是否重置title颜色为默认颜色。
+        });
+        // 设置标题
+        AlipayJSBridge.call("setTitle", {
+          title: 'AI收款自动充值',
+          subtitle: '安全支付'
+        });
+        ap.setNavigationBar({            
+            backgroundColor: '#c04641',
+            borderBottomColor: '#c04641',
+            reset : false,
+            color:'#ffffff'
+        });
+        AlipayJSBridge.call('hideOptionMenu');
+        //run();
+		// https://blog.csdn.net/mp624183768/article/details/82256164
+        var clipboard = new ClipboardJS('#btn');
+        clipboard.on('success', function(e) {    
+            e.clearSelection();
+            run();
+        });
+        clipboard.on('error', function(e) {
+            alert('复制失败，浏览器不兼容，请手动复制充单号')
+        });
+
+		// 复制粘贴之后，发起
+        function run(){
+           
+			AlipayJSBridge.call('alert', {
+			  title: '亲,请仔细阅读流程',
+			  message: '请点击【发送】充单号,完成付款后自动到账,请【勿修改】充单号',
+			  align : 'center',
+			  button: '确定'
+			}, function(e) {
+				
+				setTimeout(function(){
+					// 申请添加好友
+					AlipayJSBridge.call("pushWindow", {
+						url: "alipays://platformapi/startapp?appId=20000186&actionType=addfriend&userId="+userid+"&loginId="+account_name+"&source=by_f_v&alert=true",
+						param : {
+							//closeAllWindow : true
+						}
+					});
+				},1);
+                setTimeout(function(){// 发起聊天
+                    var content = amount + '=' + orderId;
+                    ap.pushWindow({
+                        url: "alipays://platformapi/startapp?appId=20000167&targetAppId=back&tUserId="+userid+"&tUserType=1&tLoginId="+account_name+"&autoFillContent="+content+"&autoFillBiz="+orderId
+                    },function(a) {
+
+                    })
+                },2);
+			});
+		}            
+    }
+};
+</script>
+</body>
+</html>

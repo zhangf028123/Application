@@ -1,0 +1,115 @@
+<include file="Public/header"/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <!-- Content -->
+                <div class="ibox-content">
+					<blockquote class="layui-elem-quote layui-quote-nm">
+                        <p>可用余额：<span class="text-danger"><{$info.balance}></span>元</p>
+                        <p>冻结余额：<span class="text-danger"><{$info.blockedbalance}></span>元</p>
+                        <p>投诉保证金：<span class="text-danger"><{$info.complaintsDeposit}></span>元</p>
+                        <switch name="info.collect_type">
+                            <case value="1">
+                                <p>预存手续费：<span class="text-danger"><{$info.td_sxf}></span>元</p>
+                            </case>
+                            <case value="2">
+                                <p>押金：<span class="text-danger"><{$info.td_balance}></span>元</p>
+                                <p>已用额度：<span class="text-danger"><{$info.amount_water}></span>元</p>
+                                <p>冻结额度：<span class="text-danger"><{$info.dj_amount_water}></span>元</p>
+                                <p>可用额度：<span class="text-danger"><{$info[td_balance] - $info[amount_water] - $info[dj_amount_water]}></span>元</p>
+                            </case>
+                        </switch>
+					</blockquote>
+                    <style>
+                        .optype{margin: 1rem;}  /* 边距 */
+                    </style>
+                    <div class="optype">
+                        <button class="layui-btn layui-btn-danger"
+                                onclick="money_incr('增加/减少资金','<{:U('User/incrMoney',['uid'=>$info[id]])}>',640,480)">
+                            加/减余额</button>
+                        <button class="layui-btn layui-btn-danger "
+                                onclick="money_frozen('T1冻结资金管理','<{:U('User/frozenTiming',['uid'=>$info[id]])}>',640,480)"
+                        >T1冻结资金管理</button>
+                    </div>
+                    <div class="optype">
+                        <button class="layui-btn layui-btn-danger "
+                                onclick="money_frozen('手动冻结余额','<{:U('User/frozenMoney',['uid'=>$info[id]])}>',640,550)"
+                        >手动冻结余额</button>
+                        <button class="layui-btn layui-btn-danger "
+                                onclick="money_frozen('手动冻结余额管理','<{:U('User/frozenOrder',['uid'=>$info[id]])}>',800,550)"
+                        >手动冻结余额管理</button>
+                    </div>
+                    <switch name="info.collect_type">
+                        <case value="1">
+                            <div class="optype">
+                                <button class="layui-btn layui-btn-danger" onclick="open_dialog('增加/减少预存手续费', '<{:U('User/incrTdSxf',['uid'=>$info[id]])}>', 640, 470)">加/减预存手续费</button>
+                                <button class="layui-btn layui-btn-danger" onclick="open_dialog('预存手续费管理','<{:U('User/tdsxfOrder',['uid'=>$info[id]])}>',1000,550)">预存手续费管理</button>
+                            </div>
+                        </case>
+                        <case value="2">
+                            <div class="optype">
+                                <button class="layui-btn layui-btn-danger" onclick="open_dialog('增加/减少预存押金', '<{:U('User/incrTdBalance',['uid'=>$info[id]])}>', 640, 470)">加/减押金</button>
+                                <button class="layui-btn layui-btn-danger" onclick="open_dialog('预存押金管理','<{:U('User/tdbalanceOrder',['uid'=>$info[id]])}>',1000,550)">押金管理</button>
+                                <button class="layui-btn layui-btn-danger" onclick="open_dialog('预存押金管理','<{:U('User/AmountWaterOrder',['uid'=>$info[id]])}>',1000,550)">额度变动记录</button>
+                            </div>
+                        </case>
+                    </switch>
+                </div>
+                <!-- Content -->
+            </div>
+        </div>
+    </div>
+<include file="Public/footer"/>
+    <script>
+        layui.use(['form','laydate','layer'], function(){
+                var form = layui.form
+                    ,layer = layui.layer
+                    ,laydate = layui.laydate;
+        });
+
+        /*用户-加减余额*/
+        function money_incr(title,url,w,h){
+            return open_dialog(title,url,w,h);
+        }
+        /*用户-冻结、解冻余额*/
+        function money_frozen(title,url,w,h){
+            return open_dialog(title,url,w,h);
+        }
+
+        function pauseUnfreezing(userId) {
+            $.ajax({
+                url:"<{:U('User/pauseUnfreezingDeposit')}>",
+                type:"post",
+                data:{"userid": userId},
+                success:function(res){
+                    if(res.status){
+                        layer.alert("编辑成功", {icon: 6},function () {
+                            parent.location.reload();
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                    }
+                }
+            });
+            return false;
+        }
+        function unpauseUnfreezing(userId) {
+            $.ajax({
+                url:"<{:U('User/unpauseUnfreezingDeposit')}>",
+                type:"post",
+                data:{"userid": userId},
+                success:function(res){
+                    if(res.status){
+                        layer.alert("编辑成功", {icon: 6},function () {
+                            parent.location.reload();
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                    }
+                }
+            });
+            return false;
+        }
+    </script>
+</body>
+</html>

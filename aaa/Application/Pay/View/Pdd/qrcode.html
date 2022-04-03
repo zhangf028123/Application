@@ -1,0 +1,262 @@
+<!doctype html>
+<html class="no-js">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="email=no" />
+<!-- 启用360浏览器的极速模式(webkit) -->
+<meta name="renderer" content="webkit">
+<!-- 避免IE使用兼容模式 -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+<meta name="HandheldFriendly" content="true">
+<!-- 微软的老式浏览器 -->
+<meta name="MobileOptimized" content="320">
+<!-- uc强制竖屏 -->
+<meta name="screen-orientation" content="portrait">
+<!-- QQ强制竖屏 -->
+<meta name="x5-orientation" content="portrait">
+<!-- UC强制全屏 -->
+<meta name="full-screen" content="yes">
+<!-- QQ强制全屏 -->
+<meta name="x5-fullscreen" content="true">
+<!-- UC应用模式 -->
+<meta name="browsermode" content="application">
+<!-- QQ应用模式 -->
+<meta name="x5-page-mode" content="app">
+<!--这meta的作用就是删除默认的苹果工具栏和菜单栏-->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<!--网站开启对web app程序的支持-->
+<meta name="apple-touch-fullscreen" content="yes">
+<!--在web app应用下状态条（屏幕顶部条）的颜色-->
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<!-- windows phone 点击无高光 -->
+<meta name="msapplication-tap-highlight" content="no">
+<!--移动web页面是否自动探测电话号码-->
+<meta http-equiv="x-rim-auto-match" content="none">
+<!--移动端版本兼容 start -->
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" name="viewport" />
+<!--移动端版本兼容 end -->
+    <title>微信扫码支付</title>
+
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="/Public/zfb/js/assets/i/favicon.png">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="/Public/zfb/js/assets/i/app-icon72x72@2x.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="apple-touch-icon-precomposed" href="/Public/zfb/js/assets/i/app-icon72x72@2x.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/Public/zfb/js/assets/i/app-icon72x72@2x.png">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+
+    <link rel="stylesheet" href="/Public/zfb/js/assets/css/amazeui.min.css">
+    <link rel="stylesheet" href="/Public/zfb/js/assets/css/wx.css">
+
+    <link href="Public/Front/js/plugins/layui/css/layui.css" rel="stylesheet">
+    <style>
+        #zfbQrcode img{display: inline !important;}
+    </style>
+</head>
+<body>
+    <header class="wepay">
+        <h1><a href="#" class="am-text-ir am-center">微信支付</a></h1>
+    </header>
+    <div class="am-g am-g-fixed am-margin-vertical wx-box">
+        <div class="am-u-md-8 am-u-sm-12 am-u-sm-centered am-margin-vertical am-text-center">
+            </div>
+
+            <div class="am-u-md-8 am-u-sm-12 am-u-sm-centered am-margin-vertical am-text-center"><p class="am-text-xxxl">￥<{$money}></p></div>
+      
+              
+            <div class="am-u-md-8 am-u-sm-12 am-u-sm-centered am-margin-vertical am-text-center wx-code" id="qrcode">
+                <!--<img onclick="$('#use').hide()" id="use" src="/Public/zfb/js/assets/img/wx.png"
+                             style="position: absolute;top: 50%;left: 50%;width:32px;height:32px;margin-left: -16px;margin-top: -16px">
+                <img width="210" height="210" src="<{$siteurl}><{$imgurl}>"> -->
+                <div id="zfbQrcode"  style="position: relative;"></div>
+			</div>
+
+            <div class="am-u-md-8 am-u-sm-12 am-u-sm-centered am-margin-vertical am-text-center">
+                <p>请使用微信扫码二维码，以完成支付</p>
+                <p style="color:red;">请输入与上面显示一致的金额，否则不到账</p>
+                <!--             <img src="/Public/zfb/js/assets/img/wxsm.png" alt="请使用手机浏览器打开，以完成支付"><br>
+         <div class="tps_btn" style="padding-top: 10px;">
+               <a href="<{$zfbpayUrl}>" target="_blank" style="color: #fff;text-decoration: none; text-align: center;padding: .55rem 0; display: inline-block; width: 41%; border-radius: .3rem; font-size: 14px;background-color: #428bca; border: 1px solid #428bca;letter-spacing:normal;font-weight: normal">立即启动支付宝APP支付</a>
+                           </div> -->
+<div class="foot"><!-- <p>手机用户可微信APP扫码支付</p>
+            <p>微信扫码不支持相册或截图支付</p> -->
+</div>
+            </div>
+            <div class="am-u-md-8 am-u-sm-12 am-u-sm-centered am-margin-vertical am-text-center">
+                      <hr>
+                <div class="foot">
+                   <div class="am-text-center">支付订单号：<{$params.out_trade_id}></div>
+                </div>
+				 <hr>
+                <div class="foot">
+                   <div class="am-text-center">订单时间：<{$params['datetime']}></div>
+                </div>
+                <hr>             
+                <div class="foot">
+                    <div class="am-text-center">请在订单提交后3分钟内完成支付</div> 
+                </div>
+                <hr>
+            </div>
+        </div>
+    <!--在这里编写你的代码-->
+    <!--[if (gte IE 9)|!(IE)]><!-->
+    <script src="/Public/zfb/js/assets/js/jquery.min.js"></script>
+    <!--<![endif]-->
+    <!--[if lte IE 8 ]>
+    <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+    <script src="static/js/assets/js/amazeui.ie8polyfill.min.js"></script>
+    <![endif]-->
+<script src="/Public/Front/js/jquery.min.js"></script>
+<script src="/Public/Front/js/bootstrap.min.js"></script>
+    <script src="/Public/js/qrcode.js"></script>
+    <script src="Public/Front/js/plugins/layui/layui.js" charset="utf-8"></script>
+<script>
+
+    var r ;
+    var check = function(){
+        r = window.setInterval(function () {
+            $.ajax({
+                type: 'POST',
+                url: '<{:U("Pay/checkorder")}>',
+                data: "orderid=<{$orderid}>",
+                dataType: 'json',
+                success: function (str) {
+                    if (str.state == 1) {
+                        window.clearInterval(r);
+                        window.location.href=str.callback;
+                    }
+                }
+            });
+        }, 1000);
+    }
+
+    $(document).ready(function () {
+        new QRCode(document.getElementById("zfbQrcode"), {
+            text: "<{$imgurl}>",
+            width: 210,
+            height: 210,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.L
+        });
+        check();
+    });
+
+        layui.use(['layer', 'form'],function(){
+		/*
+            var content = `<div class="center" style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">
+<div style="margin-bottom: 10px;">请花10秒时间仔细阅读</div>
+<p>①按下单金额支付指定的金额</p>
+<p>②当前二维码仅允许支付一次</p>
+<p>③在3分钟有效期内完成支付</p>
+<p>支付5分钟不到账 请联系平台客服</p>
+<hr>
+<p>不按要求进行支付</p>
+<p style="color: red; font-weight: bold; ">将不到账并且不退款</p>
+</div>`;
+            //示范一个公告层
+            var i = 3;
+            var interval;
+            var index = layer.confirm('美容', {
+                type: 1
+                ,title: '微信扫码支付条款' //不显示标题栏
+                ,closeBtn: false
+                ,area: '350px;'
+                ,shade: 0.8
+                ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                ,resize: false
+                ,btn: ['等待'+(i+1)+'秒', '我拒绝接受']
+                ,btnAlign: 'c'
+                ,moveType: 1 //拖拽模式，0或者1
+                ,content: content
+                ,success: function () {
+                    var fn = function () {
+                        $('.layui-layer-btn0').text('等待'+(i+1)+'秒'); i--;
+                    };
+                    interval = setInterval(function () {
+                        fn();
+                        if(i == 0){
+                            clearInterval(interval);
+                            layer.close(index);
+                            //check();
+                        }
+                    }, 1000);
+                }
+                ,end:function () {
+                    clearInterval(interval);
+                }
+            },function(index, layero){
+                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                //check();
+            },function(index, layero){
+                //按钮【按钮二】的回调
+                history.go(-1);
+                //return false 开启该代码可禁止点击该按钮关闭
+            });//*/
+
+
+        });
+
+</script>
+    <script type="text/javascript">
+        <{if condition="$isInWeixin"}>
+        if (0 === 0) {
+            window.onload = function() {
+                {
+                    var is_postmsg = "";
+                    if (is_postmsg == "1") {
+                        parent.postMessage(JSON.stringify({
+                            action: "send_deeplink",
+                            data: {
+                                // deeplink: "weixin://wap/pay?prepayid%3Dwx20171204195948d0d40803800224970868&package=121328958&noncestr=1512388788&sign=545a16c77fd27d98a3eaf23751ec6104"
+                                deeplink: "<{$imgurl}>"
+                            }
+                        }), "");
+                    } else {
+                        var url = "weixin://wap/pay?prepayid%3Dwx20171204195948d0d40803800224970868&package=121328958&noncestr=1512388788&sign=545a16c77fd27d98a3eaf23751ec6104";
+                        //var redirect_url = "https://npay.vip.com/wap/cashier/doPay?paySn=17120467932547060971&sid=D4D4043F87D714D61FDC13B1763BCA1FFF30491E&t=1512388788060&type=queryOrder&orderSns=17120467932547";
+                        var redirect_url = false;
+                        //top.location.href = url;
+                        top.location.href = "<{$imgurl}>";
+
+                        if (redirect_url) {
+                            setTimeout(
+                                function() {
+                                    top.location.href = redirect_url;
+                                },
+                                5000
+                            );
+                        } else {
+                            setTimeout(
+                                function() {
+                                    window.history.back();
+                                },
+                                5000);
+                        }
+                    }
+                }
+                // );
+            }
+        }
+        <{/if}>
+    </script>
+</body>
+</html>
+ 
